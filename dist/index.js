@@ -67,6 +67,13 @@ wsServer.on("connection", (socket) => {
             });
             connectedUsers--;
             usernames = usernames.filter((name) => name !== json.username);
+            if (connectedUsers === 0) {
+                grid = [
+                    [0, 0, 0],
+                    [0, 0, 0],
+                    [0, 0, 0],
+                ];
+            }
         }
         if ("move" in json && "grid" in json) {
             grid = json.grid;
