@@ -50,7 +50,6 @@ wsServer.on("connection", (socket) => {
         // DO THIS IF CONNECTED USERS IS 2
         if (connectedUsers === 2) {
             if ("connect" in json && "username" in json && !checkIfConnected(json, socket)) {
-                socket.close();
                 return;
             }
         }
