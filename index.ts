@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import ws from "ws";
+import { checkTicTacToe } from "./checker";
 
 dotenv.config();
 
@@ -86,13 +87,15 @@ wsServer.on("connection", (socket) => {
 
     if ("move" in json && "grid" in json) {
       grid = json.grid;
-      console.log(grid);
+      //console.log(grid);
+      const winner = checkTicTacToe(grid);
       turn = turn === 1 ? 2 : 1;
       wsServer.clients.forEach((client) => {
         client.send(
           JSON.stringify({
             grid,
             turn,
+            winner,
           })
         );
       });

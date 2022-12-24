@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const ws_1 = __importDefault(require("ws"));
+const checker_1 = require("./checker");
 dotenv_1.default.config();
 const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 4000;
 const app = (0, express_1.default)();
@@ -50,6 +51,7 @@ wsServer.on("connection", (socket) => {
         // DO THIS IF CONNECTED USERS IS 2
         if (connectedUsers === 2) {
             if ("connect" in json && "username" in json && !checkIfConnected(json, socket)) {
+                socket.close();
                 return;
             }
         }
@@ -76,12 +78,14 @@ wsServer.on("connection", (socket) => {
         }
         if ("move" in json && "grid" in json) {
             grid = json.grid;
-            console.log(grid);
+            //console.log(grid);
+            const winner = (0, checker_1.checkTicTacToe)(grid);
             turn = turn === 1 ? 2 : 1;
             wsServer.clients.forEach((client) => {
                 client.send(JSON.stringify({
                     grid,
                     turn,
+                    winner,
                 }));
             });
             return;
