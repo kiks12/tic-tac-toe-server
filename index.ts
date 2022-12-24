@@ -87,7 +87,6 @@ wsServer.on("connection", (socket) => {
 
     if ("move" in json && "grid" in json) {
       grid = json.grid;
-      //console.log(grid);
       const winner = checkTicTacToe(grid);
       turn = turn === 1 ? 2 : 1;
       wsServer.clients.forEach((client) => {
